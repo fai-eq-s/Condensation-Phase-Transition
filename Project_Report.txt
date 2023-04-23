@@ -1,0 +1,8 @@
+condensation.py part 1:
+10 sites, 20 particles -> chipping and diffusion
+Plotted M vs T - Mass count versus time at site one
+
+condensation.py part 2:
+Continuing part 1
+To plot graph of sigma^2 vs rho
+sigma^2 = <m^2>-<m>^2
