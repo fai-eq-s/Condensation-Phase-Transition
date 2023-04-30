@@ -5,7 +5,8 @@ import numpy as np
 
 # Read the CSV file into a Pandas dataframe
 
-df = pd.read_csv('cpt_trial6.csv')
+df = pd.read_csv('MSM_v3.2s.csv')
+
 #df1 = pd.read_csv('cpt_data_ss.csv')
 
 
@@ -66,14 +67,14 @@ df = pd.read_csv('cpt_trial6.csv')
 # PLOTTING STRAIGHT LINE -------------------------------------------------------------------------------------------------------------------------------
 
 
-#plt.loglog(0.732-df_filtered['ρ'], df_filtered['σ²-Model'], label = 'L=1024, tf = 12000000, ts = 6000000', linewidth = 0.75)
-plt.loglog(0.732-df['ρ'], df['σ²-Model'], label = 'σ²-Model', linewidth = 0.75)
-#plt.loglog(0.732-df['ρ'], df['σ²-Analytical'], label = 'σ²-Analytical', linewidth = 0.75)
+#plt.loglog(0.414-df_filtered['ρ'], df_filtered['σ²-Model'], label = 'L=1024, tf = 12000000, ts = 6000000', linewidth = 0.75)
+plt.loglog(df['RHO']-0.95, df['SIGMA SQUARED'], label = 'σ²-Model', linewidth = 0.75)
+#plt.loglog(0.414-df['ρ'], df['σ²-Analytical'], label = 'σ²-Analytical', linewidth = 0.75)
 
 
 
-#plt.plot(0.732-d['ρ'], (d['exp_rhoc']**8)*2.2, label = 'exp(ρc - ρ)', linewidth = 0.75 )
-#plt.plot(0.732-d['ρ'], d['σ²-Analytical'], label = 'σ²-Model vs ρ, L = 100', linewidth = 0.75 )
+#plt.plot(0.414-d['ρ'], (d['exp_rhoc']**8)*2.2, label = 'exp(ρc - ρ)', linewidth = 0.75 )
+#plt.plot(0.414-d['ρ'], d['σ²-Analytical'], label = 'σ²-Model vs ρ, L = 100', linewidth = 0.75 )
 
 
 # PLOTTING MASS DISTRIBUTION
@@ -83,15 +84,15 @@ plt.loglog(0.732-df['ρ'], df['σ²-Model'], label = 'σ²-Model', linewidth = 0
 
 
 # PLOTTING SCATTER PLOT -----------------------------------------------------------------------------------------------------------------------------------------------
-#plt.scatter(0.732-df_filtered['ρ'], df_filtered['σ²-Model'], s=8)
-plt.scatter(0.732-df['ρ'], df['σ²-Model'], s=8)
-#plt.scatter(0.732-df['ρ'], df['σ²-Analytical'], s=8)
+#plt.scatter(0.414-df_filtered['ρ'], df_filtered['σ²-Model'], s=8)
+plt.scatter(df['RHO']-0.95, df['SIGMA SQUARED'], s=8)
+#plt.scatter(0.414-df['ρ'], df['σ²-Analytical'], s=8)
 
 
-#plt.plot(0.732-df['ρ'], (0.732-df['ρ'])**(-0.4)*5, label = '|ρc - ρ|ᵃ', linewidth = 0.75, color = 'r' )
+plt.plot(df['RHO']-0.95, (df['RHO']-0.95)**(0.48)*2.1, label = '|ρc - ρ|ᵃ', linewidth = 0.75, color = 'r' )
 
 
-#plt.scatter(0.732-d['ρ'], (d['exp_rhoc']**8)*2.2, s=10)
+#plt.scatter(0.414-d['ρ'], (d['exp_rhoc']**8)*2.2, s=10)
 #plt.scatter(d['ρ'], d['σ²-Analytical'], s=8)
 
 # PLOTTING MASS DISTRIBUTION SCATTER PLOT
@@ -110,11 +111,7 @@ plt.scatter(0.732-df['ρ'], df['σ²-Model'], s=8)
 
 
 # FITTING A LINE ----------------------------------------------------------------------------
-#x = 0.732-df['ρ']
-#y = df['σ²-Model']
 
-#m, b = np.polyfit(x, np.log10(y), 1)
-#plt.loglog(x, 10**(m*x + b), label='linear fit')
 
 
 
@@ -132,9 +129,9 @@ plt.scatter(0.732-df['ρ'], df['σ²-Model'], s=8)
 #plt.ylabel('P(m)')
 #plt.title('P(m) vs m, Rho = 0.2')
 
-plt.xlabel('ρ', fontsize = 20)
+plt.xlabel('ρ-ρc', fontsize = 20)
 plt.ylabel('σ²', fontsize = 20)
-plt.title('σ² vs ρ (LogLog Scale),  L = 100, tf = 600000, ts = 300000, R = 100', fontsize = 15)
+plt.title('σ² vs ρ (LogLog Scale)', fontsize = 15)
 
 #plt.xlim(left=1)
 plt.legend()

@@ -2,17 +2,9 @@ import java.util.*;
 import java.io.FileWriter;
 import java.io.IOException;
 
+public class cpt_SS_SubSys {
 
-/*
-L = 100, 200, 400, 600, 800, 1000
-*/
-
-
-public class cpt_4 {
-
-    
-
-    //    CHIPPING FUNCTION
+    //	CHIPPING FUNCTION
     public static void chipping(int[] m, int i, int L){
 		Random rand = new Random();
         int j;
@@ -23,12 +15,12 @@ public class cpt_4 {
             j = (i + L - 1) % L;
         }
         m[j] = m[j] + 1;
-        
+		m[i] = m[i] - 1;
     }
-    //    DIFFUSING FUNCTION
+
+    //	DIFFUSING FUNCTION
     public static void diffuse(int[] m, int i, int L){
         Random rand = new Random();
-        
         int j;
         if (rand.nextBoolean()) {
             j = (i + 1) % L;
@@ -37,10 +29,11 @@ public class cpt_4 {
             j = (i + L - 1) % L;
         }
         m[j] = m[j]+m[i];
-        
+		m[i]=0;
     }
 
-    //    FUNCTION FOR REALIZATION LOOP AND MONTE CARLO LOOP
+
+    //	DYNAMICS
     public static void dynamics(Vector<Double> sigmaModel, Vector<Double> rhos, double rho, Vector<Double> sigmaAnalytic, int[] m, int R, int L, int tf, int ts, FileWriter csvwriter){
     	
 
@@ -48,34 +41,35 @@ public class cpt_4 {
         double SM = 0;
         Random rand = new Random();
 
-        //        REALIZATION LOOP
+        //	REALIZATION LOOP
         for (int r = 0; r < R; r++) {
 			int rgn = 0;
         	int curr = (int)(rho*L);
-			
+			Arrays.fill(m, 0);
             while (curr!=0) {
-				
-                curr = curr - rgn;
+				curr = curr - rgn;
                 rgn = rand.nextInt((curr+1));
                 int a = rand.nextInt(L);
                 m[a] = m[a] + rgn;
             }
+		
+			//	MONTE CARLO LOOP
             for (int t = 0; t <tf ; t++) {
                 for (int tm = 0; tm < L; tm++) {
-					//Random rand = new Random();
                     int i = rand.nextInt(L);
                     if (m[i]>0){
-                        chipping(m, i, L);
-						m[i] = m[i] - 1;
-					}
-					else{
-						diffuse(m, i, L);
-						m[i]=0;
+                        double x = rand.nextDouble();
+						if(x>0.5){
+							chipping(m, i, L);
+						}
+						else{
+							diffuse(m, i, L); 
+						}
 					}
                 }
                 if(t>ts){
-                    FM = FM + m[0];
-                    SM = SM + (m[0]*m[0]);
+                    FM = FM + m[0] + m[1] + m[2] + m[3] + m[3] + m[4] + m[5] + m[6] + m[7] + m[8] + m[9];
+                    SM = SM + (m[0]*m[0]) + (m[1]*m[1]) + (m[2]*m[2]) + (m[3]*m[3]) + (m[4]*m[4]) + (m[5]*m[5]) + (m[6]*m[6]) + (m[7]*m[7]) + (m[8]*m[8]) + (m[9]*m[9]);
                     
                 }
             }
@@ -112,14 +106,14 @@ public class cpt_4 {
         Vector<Double> sigmaModel = new Vector<>();
         Vector<Double> rhos = new Vector<>();
         Vector<Double> sigmaAnalytic = new Vector<>();
-        int tf= 20;
-        int ts= 10;
+        int tf= 2;
+        int ts= 1;
         int L = 1000;
-		int R=1;
+        int R=1;
 		double rho = 0.0;
 		int[] m = new int[L];
 
-        String path = "cpt_trial6.csv";
+        String path = "cpt_SS_SubSys.csv";
 
         FileWriter csvwriter = new FileWriter(path);
 
@@ -140,17 +134,14 @@ public class cpt_4 {
 		for(int i=1; i<27; i++){
 			if(i<8){
 				rho = rho + 0.05;
-				//int[] m = new int[L];
 				dynamics(sigmaModel, rhos, rho, sigmaAnalytic, m, R, L, tf, ts ,csvwriter);
 			}
 			else if (i<13){
 				rho = rho + 0.01;
-				//int[] m = new int[L];
 				dynamics(sigmaModel, rhos, rho, sigmaAnalytic, m, R, L, tf, ts ,csvwriter);
 			}
 			else {
 				rho = rho + 0.001;
-				//int[] m = new int[L];
 				dynamics(sigmaModel, rhos, rho, sigmaAnalytic, m, R, L, tf, ts ,csvwriter);
 			}
 		}
@@ -163,11 +154,3 @@ public class cpt_4 {
     }
 }
 
-
-
-// cpt_data_ss.csv -> L=1024, tf = 12000000, ts = 6000000
-// cpt_data_ss1.csv -> L=1024, tf = 25000000, ts = 10000000
-// cpt_trial1.csv -> L=1000, tf = 12000000, ts = 6000000, R = 10
-// cpt_trial2.csv -> L=100, tf = 1200000, ts = 600000, R = 10
-// cpt_trial3.csv -> L=1000, tf = 12000000, ts = 6000000, R = 1
-// cpt_trial4.csv -> L=100, tf = 6000000, ts = 3000000, R = 100
